@@ -27,6 +27,7 @@ public class ElevatorService {
     public Integer pickAppropriateElevator(int sourceFloor, int destinationFloor) {
         Integer selectedElevator;
         List<Integer> elevatorsOnSameFloorAsSource = findElevatorsOnSameFloorAsSource(sourceFloor);
+        elevatorsOnSameFloorAsSource.removeAll(elevatorsInUse);
         elevatorsOnSameFloorAsSource.removeAll(outOfOrderElevators);
         if (elevatorsOnSameFloorAsSource.isEmpty()) {
             selectedElevator = findClosestElevator(sourceFloor);
@@ -55,6 +56,7 @@ public class ElevatorService {
 
     private void updateMapOfElevators(int destinationFloor, Integer selectedElevator) {
         mapOfFloorToElevator.put(selectedElevator, destinationFloor);
+        elevatorsInUse.add(selectedElevator);
     }
 
     private List<Integer> getSlowElevator(List<Integer> elevatorsOnSameFloorAsSource) {
